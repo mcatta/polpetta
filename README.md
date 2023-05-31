@@ -1,4 +1,6 @@
+![polpetta](extra/polpetta-logo.png) 
 # Polpetta
+[![Android CI](https://github.com/mcatta/polpetta/actions/workflows/test.yml/badge.svg)](https://github.com/mcatta/polpetta/actions/workflows/test.yml)
 
 It's "another" MVI library but with a funny name.
 With this library you will be able to mutate your State by using a Action defined by using DSL.
