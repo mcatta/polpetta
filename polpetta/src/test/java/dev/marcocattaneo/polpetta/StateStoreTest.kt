@@ -23,17 +23,17 @@ internal class StateStoreTest {
         coroutineScope = scope,
         initialState = TestState(0),
         reducerFactory =  {
-            on<TestAction.Decrease> {
-                reducer { state -> state.mutate { copy(counter = counter - 1) } }
+            on<TestAction.Decrease> { _, stateModifier ->
+                stateModifier.mutate { copy(counter = counter - 1) }
             }
-            on<TestAction.Increase> {
-                reducer { state -> state.mutate { copy(counter = counter.delayedIncrease()) } }
+            on<TestAction.Increase> { _, stateModifier ->
+                stateModifier.mutate { copy(counter = counter.delayedIncrease()) }
             }
-            on<TestAction.Set> { action ->
-                reducer { state -> state.mutate { copy(counter = action.n) } }
+            on<TestAction.Set> { action, stateModifier ->
+                stateModifier.mutate { copy(counter = action.n) }
             }
-            on<TestAction.DoNothing> {
-                reducer { state -> state.nothing() }
+            on<TestAction.DoNothing> { _, stateModifier ->
+                stateModifier.nothing()
             }
         }
     )

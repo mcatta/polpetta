@@ -26,17 +26,17 @@ class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterSta
     coroutineScope = scope,
     initialState = CounterState(0),
     reducerFactory =  {
-        on<CounterAction.Decrease> {
-            reducer { state -> state.mutate { copy(counter = counter - 1) } }
+        on<CounterAction.Decrease> { action, state ->
+            state.mutate { copy(counter = counter - 1) }
         }
-        on<CounterAction.Increase> {
-            reducer { state -> state.mutate { copy(counter = counter + 1) } }
+        on<CounterAction.Increase> { action, state ->
+            state.mutate { copy(counter = counter + 1) }
         }
-        on<CounterAction.Set> { action ->
-            reducer { state -> state.mutate { copy(counter = action.n) } }
+        on<CounterAction.Set> { action, state ->
+            state.mutate { copy(counter = action.n) }
         }
-        on<CounterAction.DoNothing> {
-            reducer { state -> state.nothing() }
+        on<CounterAction.DoNothing> { action, state ->
+            state.nothing()
         }
         // ...
     }
@@ -45,12 +45,12 @@ class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterSta
 
 The reducer supports two types of operation:
 ```kotlin
-reducer { state -> state.nothing() }
+{ action, state -> state.nothing() }
 ```
 which basically doesn't change the state
 
 ```kotlin
-reducer { state -> state.mutate { copy(counter = counter + 1) } }
+{ action, state -> state.mutate { copy(counter = counter + 1) } }
 ```
 which mutate the state (Note: your state must be `data class` in order to copy it)
 

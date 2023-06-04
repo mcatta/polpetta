@@ -6,11 +6,11 @@ import dev.marcocattaneo.polpetta.operators.StateModifier
 /**
  * The reducer is a pure function that return a new state [S] starting from a [StateModifier]
  */
-fun interface Reducer<S : State> {
+internal fun interface Reducer<S : State> {
     suspend fun reduce(currentState: StateModifier<S>): S
 }
 
 /**
  * This method allows to create an [Reducer]
  */
-fun <S : State> reducer(block: suspend (StateModifier<S>) -> S) = Reducer(block)
+internal fun <S : State> reducer(block: suspend (StateModifier<S>) -> S) = Reducer(block)

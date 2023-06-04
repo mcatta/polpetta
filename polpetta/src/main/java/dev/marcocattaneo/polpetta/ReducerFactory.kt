@@ -3,7 +3,9 @@ package dev.marcocattaneo.polpetta
 import dev.marcocattaneo.polpetta.core.ReducerFactoryBuilder
 import dev.marcocattaneo.polpetta.operators.Action
 import dev.marcocattaneo.polpetta.operators.State
+import dev.marcocattaneo.polpetta.operators.StateModifier
 import dev.marcocattaneo.polpetta.reducers.Reducer
+import dev.marcocattaneo.polpetta.reducers.reducer
 import kotlin.reflect.KClass
 
 /**
@@ -18,28 +20,28 @@ abstract class ReducerFactory<A : Action, S : State> {
         ?.build(action)
 
     /**
-     * Define a [Reducer] for the defined action [A]
+     * Define a [Reducer]'s body for the defined action [A]
      * @param block
      */
-    inline fun <reified RA : A> on(noinline block: (RA) -> Reducer<S>) {
+    inline fun <reified RA : A> on(noinline block: suspend (RA, StateModifier<S>) -> S) {
         on(RA::class, block)
     }
 
     /**
-     * Define a [Reducer] for the defined action with class [KClass]
+     * Define a [Reducer]'s body for the defined action with class [KClass]
      * @param kClass
      * @param block
      */
     fun <RA : A> on(
         kClass: KClass<RA>,
-        block: (RA) -> Reducer<S>
+        block: suspend (RA, StateModifier<S>) -> S
     ) {
         _reducerDefinition.add(
             ReducerFactoryBuilder(
                 kClassAction = kClass,
                 handler = { action ->
                     @Suppress("UNCHECKED_CAST")
-                    block(action as RA)
+                    reducer { state -> block(action as RA, state) }
                 }
             )
         )
