@@ -6,9 +6,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class StateStoreTest {
@@ -70,6 +68,23 @@ internal class StateStoreTest {
             assertEquals(42, (awaitItem() as TestState.Count).counter)
             assertEquals("42", (awaitItem() as TestState.Result).message)
         }
+    }
+
+    @Test
+    fun `Test unsupported action`() = runTest(context = testScope.coroutineContext) {
+        // Given
+        val testStore = object : StateStore<TestAction, TestState>(
+            coroutineScope = testScope,
+            initialState = TestState.Count(0),
+            reducerFactory = {
+                on<TestAction.DoNothing> { _, stateModifier ->
+                    stateModifier.nothing()
+                }
+            }
+        ) {}
+
+        // When / Then
+        assertFailsWith<IllegalStateException> { testStore.dispatchAction(TestAction.Increase) }
     }
 
 }

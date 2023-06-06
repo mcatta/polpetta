@@ -39,8 +39,8 @@ abstract class StateStore<A : Action, S : State>(
      * Dispatch an action that trigger a Reducer
      * @return true if the Action si defined
      */
-    suspend fun dispatchAction(action: A): Boolean = _reducerFactory.getReducer(action)?.let { reducer ->
+    suspend fun dispatchAction(action: A): Unit = _reducerFactory.getReducer(action).let { reducer ->
         _reducerQueue.send(reducer)
-    } != null
+    }
 
 }

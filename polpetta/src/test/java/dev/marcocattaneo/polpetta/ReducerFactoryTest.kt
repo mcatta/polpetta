@@ -3,8 +3,8 @@ package dev.marcocattaneo.polpetta
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 
 internal class ReducerFactoryTest {
 
@@ -34,7 +34,7 @@ internal class ReducerFactoryTest {
         }
 
         // Then
-        assertNull(reducerFactory.getReducer(TestAction.Increase))
+        assertFailsWith<IllegalStateException> { reducerFactory.getReducer(TestAction.Increase) }
     }
 
 }

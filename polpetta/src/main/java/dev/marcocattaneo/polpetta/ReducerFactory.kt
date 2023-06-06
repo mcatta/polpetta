@@ -15,9 +15,14 @@ abstract class ReducerFactory<A : Action, S : State> {
 
     private val _reducerDefinition = mutableListOf<ReducerFactoryBuilder<A, S>>()
 
-    internal fun getReducer(action: A): Reducer<S>? = _reducerDefinition
+    /**
+     * Return the [Reducer] bond to the action [action]
+     * @param action
+     * @throws IllegalStateException in case that action doesn't have any Reducers
+     */
+    internal fun getReducer(action: A): Reducer<S> = _reducerDefinition
         .firstOrNull { item -> item.kClassAction.java == action.javaClass }
-        ?.build(action)
+        ?.build(action) ?: throw IllegalStateException("There isn't any Reducer bond to this action $action")
 
     /**
      * Define a [Reducer]'s body for the defined action [A]
