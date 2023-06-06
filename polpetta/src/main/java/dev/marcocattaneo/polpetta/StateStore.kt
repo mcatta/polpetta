@@ -3,7 +3,7 @@ package dev.marcocattaneo.polpetta
 import dev.marcocattaneo.polpetta.operators.Action
 import dev.marcocattaneo.polpetta.operators.State
 import dev.marcocattaneo.polpetta.operators.StateModifier
-import dev.marcocattaneo.polpetta.reducers.Reducer
+import dev.marcocattaneo.polpetta.core.Reducer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*

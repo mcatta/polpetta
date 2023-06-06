@@ -9,13 +9,17 @@ With this library you will be able to mutate your State by using a Action define
 You application's State must extend `State` and your action the `Action` class. Every `Action` can prompt a `Reducer` which basically manipulate your State.
 
 ```kotlin
-data class CounterState(val counter: Int) : State
+sealed interface CounterState : State {
+    data class Count(val counter: Int) : TestState
+    data class Result(val message: String) : TestState
+}
 
 sealed interface CounterAction : Action {
     object Increase : CounterAction
     object Decrease : CounterAction
     data class Set(val n: Int) : CounterAction
     object DoNothing : CounterAction
+    object ToString : CounterAction
 }
 ```
 
@@ -24,36 +28,45 @@ This is you State and Actions definition, now you need to write a `StateStore` w
 ```kotlin
 class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterState>(
     coroutineScope = scope,
-    initialState = CounterState(0),
+    initialState = CounterState.Count(0),
     reducerFactory =  {
         on<CounterAction.Decrease> { action, state ->
-            state.mutate { copy(counter = counter - 1) }
+            state.mutate<CounterState.Count> { copy(counter = counter - 1) }
         }
         on<CounterAction.Increase> { action, state ->
-            state.mutate { copy(counter = counter + 1) }
+            state.mutate<CounterState.Count> { copy(counter = counter + 1) }
         }
         on<CounterAction.Set> { action, state ->
-            state.mutate { copy(counter = action.n) }
+            state.mutate<CounterState.Count> { copy(counter = action.n) }
         }
         on<CounterAction.DoNothing> { action, state ->
             state.nothing()
+        }
+        on<CounterAction.ToString> { action, state ->
+            state.transform<CounterState.Count, CounterState.Result> { CounterState.Result(counter.toString()) }
         }
         // ...
     }
 )
 ```
 
-The reducer supports two types of operation:
+### Supported StateModifiers
+
+The reducer supports three types of operations:
 ```kotlin
 { action, state -> state.nothing() }
 ```
 which basically doesn't change the state
 
 ```kotlin
-{ action, state -> state.mutate { copy(counter = counter + 1) } }
+{ action, state -> state.mutate<CounterState.count> { copy(counter = counter + 1) } }
 ```
-which mutate the state (Note: your state must be `data class` in order to copy it)
+which mutate the properties of the current state (Note: your state must be `data class` in order to copy it)
+
+```kotlin
+{ action, state -> state.transform<CounterState.count, CounterState.result> { CounterState.Result(counter.toString()) } }
+```
+which allows to change the current state into a new one of different type
 
 ### Next?
-- Support other kind of mutations
 - Side effects

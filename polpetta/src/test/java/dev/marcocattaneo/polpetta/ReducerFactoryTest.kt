@@ -19,7 +19,7 @@ internal class ReducerFactoryTest {
     fun `Test getting a the Reducer for a defined Action`() = runTest {
         // When
         reducerFactory.on<TestAction.Decrease> { _, stateModifier ->
-            stateModifier.mutate { copy(counter = 42) }
+            stateModifier.mutate<TestState.Count> { copy(counter = 42) }
         }
 
         // Then
@@ -30,7 +30,7 @@ internal class ReducerFactoryTest {
     fun `Test getting a the Reducer for a undefined Action`() = runTest {
         // When
         reducerFactory.on<TestAction.Decrease> { _, stateModifier ->
-            stateModifier.mutate { copy(counter = 42) }
+            stateModifier.mutate<TestState.Count> { copy(counter = 42) }
         }
 
         // Then

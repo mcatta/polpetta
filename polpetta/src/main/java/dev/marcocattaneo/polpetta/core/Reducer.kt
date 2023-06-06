@@ -1,4 +1,4 @@
-package dev.marcocattaneo.polpetta.reducers
+package dev.marcocattaneo.polpetta.core
 
 import dev.marcocattaneo.polpetta.operators.State
 import dev.marcocattaneo.polpetta.operators.StateModifier

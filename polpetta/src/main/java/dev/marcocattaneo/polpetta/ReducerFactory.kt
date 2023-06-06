@@ -4,8 +4,8 @@ import dev.marcocattaneo.polpetta.core.ReducerFactoryBuilder
 import dev.marcocattaneo.polpetta.operators.Action
 import dev.marcocattaneo.polpetta.operators.State
 import dev.marcocattaneo.polpetta.operators.StateModifier
-import dev.marcocattaneo.polpetta.reducers.Reducer
-import dev.marcocattaneo.polpetta.reducers.reducer
+import dev.marcocattaneo.polpetta.core.Reducer
+import dev.marcocattaneo.polpetta.core.reducer
 import kotlin.reflect.KClass
 
 /**
@@ -41,7 +41,7 @@ abstract class ReducerFactory<A : Action, S : State> {
                 kClassAction = kClass,
                 handler = { action ->
                     @Suppress("UNCHECKED_CAST")
-                    reducer { state -> block(action as RA, state) }
+                    (reducer { state -> block(action as RA, state) })
                 }
             )
         )

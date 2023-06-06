@@ -1,9 +1,6 @@
 package dev.marcocattaneo.polpetta
 
 import app.cash.turbine.test
-import dev.marcocattaneo.polpetta.operators.Action
-import dev.marcocattaneo.polpetta.operators.State
-import dev.marcocattaneo.polpetta.reducers.reducer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -21,19 +18,22 @@ internal class StateStoreTest {
 
     private class TestStore(scope: CoroutineScope) : StateStore<TestAction, TestState>(
         coroutineScope = scope,
-        initialState = TestState(0),
-        reducerFactory =  {
+        initialState = TestState.Count(0),
+        reducerFactory = {
             on<TestAction.Decrease> { _, stateModifier ->
-                stateModifier.mutate { copy(counter = counter - 1) }
+                stateModifier.mutate<TestState.Count> { copy(counter = counter - 1) }
             }
             on<TestAction.Increase> { _, stateModifier ->
-                stateModifier.mutate { copy(counter = counter.delayedIncrease()) }
+                stateModifier.mutate<TestState.Count> { copy(counter = counter.delayedIncrease()) }
             }
             on<TestAction.Set> { action, stateModifier ->
-                stateModifier.mutate { copy(counter = action.n) }
+                stateModifier.mutate<TestState.Count> { copy(counter = action.n) }
             }
             on<TestAction.DoNothing> { _, stateModifier ->
                 stateModifier.nothing()
+            }
+            on<TestAction.ToString> { _, stateModifier ->
+                stateModifier.transform<TestState.Count, TestState.Result> { TestState.Result(counter.toString()) }
             }
         }
     )
@@ -47,7 +47,7 @@ internal class StateStoreTest {
     fun `Test initial state`() = runTest(context = testScope.coroutineContext) {
         testStore.stateFlow.test {
             // Then
-            assertEquals(0, awaitItem().counter)
+            assertEquals(0, (awaitItem() as TestState.Count).counter)
         }
     }
 
@@ -60,13 +60,15 @@ internal class StateStoreTest {
             testStore.dispatchAction(TestAction.DoNothing)
             testStore.dispatchAction(TestAction.Decrease)
             testStore.dispatchAction(TestAction.Set(42))
+            testStore.dispatchAction(TestAction.ToString)
 
             // Then
-            assertEquals(0, awaitItem().counter)
-            assertEquals(1, awaitItem().counter)
-            assertEquals(2, awaitItem().counter)
-            assertEquals(1, awaitItem().counter)
-            assertEquals(42, awaitItem().counter)
+            assertEquals(0, (awaitItem() as TestState.Count).counter)
+            assertEquals(1, (awaitItem() as TestState.Count).counter)
+            assertEquals(2, (awaitItem() as TestState.Count).counter)
+            assertEquals(1, (awaitItem() as TestState.Count).counter)
+            assertEquals(42, (awaitItem() as TestState.Count).counter)
+            assertEquals("42", (awaitItem() as TestState.Result).message)
         }
     }
 
