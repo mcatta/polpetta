@@ -1,4 +1,45 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
+
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.8.22' apply false
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.publish)
+}
+
+kotlin {
+    explicitApi()
+
+    jvm {
+        compilations.configureEach { KotlinJvmCompilation compilation ->
+            compilation.compilerOptions.options.jvmTarget = JvmTarget.JVM_17
+        }
+    }
+
+    androidNativeArm32()
+    androidNativeArm64()
+    androidNativeX86()
+    androidNativeX64()
+    iosArm64()
+    iosX64()
+    iosSimulatorArm64()
+    linuxX64()
+    linuxArm64()
+    macosX64()
+    macosArm64()
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                api libs.coroutines.core
+                implementation libs.coroutines.test
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation libs.kotlin.test
+                implementation libs.turbine
+            }
+        }
+    }
+
 }

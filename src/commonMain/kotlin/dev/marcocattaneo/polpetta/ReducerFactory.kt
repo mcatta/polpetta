@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
 /**
  * Intent factory used to create an [Reducer] starting from an action [A]
  */
-abstract class ReducerFactory<A : Action, S : State> {
+public abstract class ReducerFactory<A : Action, S : State> {
 
     private val _reducerDefinition = mutableListOf<ReducerFactoryBuilder<A, S>>()
 
@@ -21,14 +21,14 @@ abstract class ReducerFactory<A : Action, S : State> {
      * @throws IllegalStateException in case that action doesn't have any Reducers
      */
     internal fun getReducer(action: A): Reducer<S> = _reducerDefinition
-        .firstOrNull { item -> item.kClassAction.java == action.javaClass }
+        .firstOrNull { item -> item.kClassAction == action::class }
         ?.build(action) ?: throw IllegalStateException("There isn't any Reducer bond to this action $action")
 
     /**
      * Define a [Reducer]'s body for the defined action [A]
      * @param block
      */
-    inline fun <reified RA : A> on(noinline block: suspend (RA, StateModifier<S>) -> S) {
+    public inline fun <reified RA : A> on(noinline block: suspend (RA, StateModifier<S>) -> S) {
         on(RA::class, block)
     }
 
@@ -37,7 +37,7 @@ abstract class ReducerFactory<A : Action, S : State> {
      * @param kClass
      * @param block
      */
-    fun <RA : A> on(
+    public fun <RA : A> on(
         kClass: KClass<RA>,
         block: suspend (RA, StateModifier<S>) -> S
     ) {
