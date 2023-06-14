@@ -3,8 +3,11 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 
 plugins {
     alias(libs.plugins.kotlin)
-    alias(libs.plugins.publish)
+    id("maven-publish")
 }
+
+group = 'com.github.mcatta'
+version = "0.0.1"
 
 kotlin {
     explicitApi()
