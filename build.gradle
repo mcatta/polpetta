@@ -46,3 +46,9 @@ kotlin {
     }
 
 }
+
+tasks.register("test") {
+    group "Verification"
+    description "Runs the tests for all targets and create aggregated report"
+    dependsOn "allTests"
+}
