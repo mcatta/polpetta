@@ -1,4 +1,4 @@
-package dev.marcocattaneo.polpetta
+package dev.mcatta.polpetta
 
 import app.cash.turbine.test
 import kotlinx.coroutines.CoroutineScope

@@ -1,4 +1,4 @@
-package dev.marcocattaneo.polpetta.operators
+package dev.mcatta.polpetta.operators
 
 /**
  * Definition used to the define the State stored by the StateStore class

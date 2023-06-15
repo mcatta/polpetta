@@ -1,7 +1,7 @@
-package dev.marcocattaneo.polpetta.core
+package dev.mcatta.polpetta.core
 
-import dev.marcocattaneo.polpetta.operators.Action
-import dev.marcocattaneo.polpetta.operators.State
+import dev.mcatta.polpetta.operators.Action
+import dev.mcatta.polpetta.operators.State
 import kotlin.reflect.KClass
 
 /**

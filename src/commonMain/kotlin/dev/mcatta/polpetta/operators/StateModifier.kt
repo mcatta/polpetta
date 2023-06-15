@@ -1,4 +1,4 @@
-package dev.marcocattaneo.polpetta.operators
+package dev.mcatta.polpetta.operators
 
 /**
  * State Modifier used to manipulate the current state inside an Intent

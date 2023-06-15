@@ -1,7 +1,7 @@
-package dev.marcocattaneo.polpetta.core
+package dev.mcatta.polpetta.core
 
-import dev.marcocattaneo.polpetta.operators.State
-import dev.marcocattaneo.polpetta.operators.StateModifier
+import dev.mcatta.polpetta.operators.State
+import dev.mcatta.polpetta.operators.StateModifier
 
 /**
  * The reducer is a pure function that return a new state [S] starting from a [StateModifier]

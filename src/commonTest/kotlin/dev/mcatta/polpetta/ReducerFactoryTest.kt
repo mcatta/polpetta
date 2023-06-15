@@ -1,4 +1,4 @@
-package dev.marcocattaneo.polpetta
+package dev.mcatta.polpetta
 
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest

@@ -1,11 +1,11 @@
-package dev.marcocattaneo.polpetta
+package dev.mcatta.polpetta
 
-import dev.marcocattaneo.polpetta.core.ReducerFactoryBuilder
-import dev.marcocattaneo.polpetta.operators.Action
-import dev.marcocattaneo.polpetta.operators.State
-import dev.marcocattaneo.polpetta.operators.StateModifier
-import dev.marcocattaneo.polpetta.core.Reducer
-import dev.marcocattaneo.polpetta.core.reducer
+import dev.mcatta.polpetta.core.ReducerFactoryBuilder
+import dev.mcatta.polpetta.operators.Action
+import dev.mcatta.polpetta.operators.State
+import dev.mcatta.polpetta.operators.StateModifier
+import dev.mcatta.polpetta.core.Reducer
+import dev.mcatta.polpetta.core.reducer
 import kotlin.reflect.KClass
 
 /**

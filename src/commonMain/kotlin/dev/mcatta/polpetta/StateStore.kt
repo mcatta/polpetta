@@ -1,9 +1,9 @@
-package dev.marcocattaneo.polpetta
+package dev.mcatta.polpetta
 
-import dev.marcocattaneo.polpetta.operators.Action
-import dev.marcocattaneo.polpetta.operators.State
-import dev.marcocattaneo.polpetta.operators.StateModifier
-import dev.marcocattaneo.polpetta.core.Reducer
+import dev.mcatta.polpetta.operators.Action
+import dev.mcatta.polpetta.operators.State
+import dev.mcatta.polpetta.operators.StateModifier
+import dev.mcatta.polpetta.core.Reducer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*

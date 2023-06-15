@@ -1,6 +1,6 @@
-package dev.marcocattaneo.polpetta.operators
+package dev.mcatta.polpetta.operators
 
-import dev.marcocattaneo.polpetta.TestState
+import dev.mcatta.polpetta.TestState
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

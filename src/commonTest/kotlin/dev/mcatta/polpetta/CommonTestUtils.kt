@@ -1,7 +1,7 @@
-package dev.marcocattaneo.polpetta
+package dev.mcatta.polpetta
 
-import dev.marcocattaneo.polpetta.operators.Action
-import dev.marcocattaneo.polpetta.operators.State
+import dev.mcatta.polpetta.operators.Action
+import dev.mcatta.polpetta.operators.State
 
 internal sealed interface TestState : State {
     data class Count(val counter: Int) : TestState
