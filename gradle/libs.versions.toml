@@ -10,3 +10,4 @@ turbine = { module = "app.cash.turbine:turbine", version = "0.13.0" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+publish = { id = "com.vanniktech.maven.publish", version = "0.25.2" }
