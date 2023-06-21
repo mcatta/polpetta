@@ -1,9 +1,20 @@
 ![polpetta](extra/polpetta-logo.png) 
 # Polpetta
 [![Android CI](https://github.com/mcatta/polpetta/actions/workflows/test.yml/badge.svg)](https://github.com/mcatta/polpetta/actions/workflows/test.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/dev.mcatta/polpetta?label=MavenCentral&logo=apache-maven)](https://search.maven.org/artifact/dev.mcatta/polpetta)
 
 It's "another" MVI library but with a funny name.
 With this library you will be able to mutate your State by using a Action defined by using DSL.
+
+### Setup
+```groovy
+repositories {
+  mavenCentral()
+}
+dependencies {
+  implementation 'dev.mcatta:polpetta:0.0.2'
+}
+```
 
 ### How it works
 You application's State must extend `State` and your action the `Action` class. Every `Action` can prompt a `Reducer` which basically manipulate your State.
