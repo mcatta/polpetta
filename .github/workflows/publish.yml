@@ -28,13 +28,12 @@ jobs:
         ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
         ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
         ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
-      run: ./gradlew publish
+      run: ./gradlew publishAllPublicationsToMavenCentral --no-configuration-cache
 
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: true
-        automatic_release_tag: ${GITHUB_REF##*/}
         title: "Pre-release"
         files: |
           README.md  
