@@ -6,7 +6,7 @@ on:
       - "v*"
 
 jobs:
-  test:
+  publish:
     runs-on: macos-latest
 
     steps:
@@ -26,6 +26,8 @@ jobs:
         ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
         ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
         ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+        ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+        ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
       run: ./gradlew publish
 
     - uses: "marvinpinto/action-automatic-releases@latest"
