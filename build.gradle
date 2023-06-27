@@ -11,7 +11,7 @@ kotlin {
 
     jvm {
         compilations.configureEach { KotlinJvmCompilation compilation ->
-            compilation.compilerOptions.options.jvmTarget = JvmTarget.JVM_17
+            compilation.compilerOptions.options.jvmTarget = JvmTarget.JVM_1_8
         }
     }
 
