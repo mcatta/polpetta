@@ -35,5 +35,3 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: true
         title: "Pre-release"
-        files: |
-          README.md  
