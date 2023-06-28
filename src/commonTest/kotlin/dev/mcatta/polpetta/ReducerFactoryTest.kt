@@ -8,11 +8,13 @@ import kotlin.test.assertNotNull
 
 internal class ReducerFactoryTest {
 
-    private lateinit var reducerFactory: ReducerFactory<TestAction, TestState>
+    private lateinit var reducerFactory: ReducerFactory<TestAction, TestState, TestSideEffect>
+
+    private val sideEffectFactory: SideEffectFactory<TestSideEffect> = SideEffectFactory()
 
     @BeforeTest
     fun setup() {
-        reducerFactory = object : ReducerFactory<TestAction, TestState>() {}
+        reducerFactory = object : ReducerFactory<TestAction, TestState, TestSideEffect>(sideEffectFactory) {}
     }
 
     @Test
