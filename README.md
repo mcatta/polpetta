@@ -6,7 +6,7 @@
 It's "another" MVI library but with a funny name.
 With this library you will be able to mutate your State by using a Action defined by using DSL.
 
-### Setup
+## Setup
 ```groovy
 repositories {
   mavenCentral()
@@ -16,7 +16,7 @@ dependencies {
 }
 ```
 
-### How it works
+## How it works
 You application's State must extend `State` and your action the `Action` class. Every `Action` can prompt a `Reducer` which basically manipulate your State.
 
 ```kotlin
@@ -32,12 +32,14 @@ sealed interface CounterAction : Action {
     object DoNothing : CounterAction
     object ToString : CounterAction
 }
+
+interface MySideEffect : SideEffect
 ```
 
 This is you State and Actions definition, now you need to write a `StateStore` which basically will persist your state and your `Action/Reducer` definition.
 
 ```kotlin
-class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterState>(
+class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterState, MySideEffect>(
     coroutineScope = scope,
     initialState = CounterState.Count(0),
     reducerFactory =  {
@@ -61,7 +63,7 @@ class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterSta
 )
 ```
 
-### Supported StateModifiers
+## Supported StateModifiers
 
 The reducer supports three types of operations:
 ```kotlin
@@ -79,8 +81,27 @@ which mutate the properties of the current state (Note: your state must be `data
 ```
 which allows to change the current state into a new one of different type
 
-### Next?
-- Side effects
+## Side Effects
+Polpetta supports also side effects. In order to support that we need to specify which `SideEffect` class we want to use:
+```kotlin
+class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterState, MySideEffect>
+```
+otherwise we can say `Nothing`
+```kotlin
+class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterState, Nothing>
+```
+
+Then given a specific SideEffect event we can prompt it inside the Reducer's scope, like this:
+```kotlin
+// Inside the StateStore
+on<TestAction.Increase> { _, stateModifier ->
+    sideEffect(TestSideEffect.Toast("Show message"))
+    
+    stateModifier.mutate<TestState.Count> { copy(counter + 1) }
+}
+// On the View
+testStore.sideEffectFlow.collect {}
+```
 
 ### License
 ```
