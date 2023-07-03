@@ -11,10 +11,10 @@ import kotlin.test.*
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class StateStoreTest {
 
-    private lateinit var testStore: StateStore<TestAction, TestState>
+    private lateinit var testStore: StateStore<TestAction, TestState, Nothing>
     private val testScope = CoroutineScope(UnconfinedTestDispatcher())
 
-    private class TestStore(scope: CoroutineScope) : StateStore<TestAction, TestState>(
+    private class TestStore(scope: CoroutineScope) : StateStore<TestAction, TestState, Nothing>(
         coroutineScope = scope,
         initialState = TestState.Count(0),
         reducerFactory = {
@@ -73,7 +73,7 @@ internal class StateStoreTest {
     @Test
     fun `Test unsupported action`() = runTest(context = testScope.coroutineContext) {
         // Given
-        val testStore = object : StateStore<TestAction, TestState>(
+        val testStore = object : StateStore<TestAction, TestState, TestSideEffect>(
             coroutineScope = testScope,
             initialState = TestState.Count(0),
             reducerFactory = {
@@ -85,6 +85,32 @@ internal class StateStoreTest {
 
         // When / Then
         assertFailsWith<IllegalStateException> { testStore.dispatchAction(TestAction.Increase) }
+    }
+
+    @Test
+    fun `Test Intents execution and side effect`() = runTest(context = testScope.coroutineContext) {
+        // Given
+        val testStore = object : StateStore<TestAction, TestState, TestSideEffect>(
+            coroutineScope = testScope,
+            initialState = TestState.Count(0),
+            reducerFactory = {
+                on<TestAction.Increase> { _, stateModifier ->
+                    sideEffect(TestSideEffect.Toast)
+                    stateModifier.mutate<TestState.Count> { copy(counter + 1) }
+                }
+            }
+        ) {}
+
+        testStore.stateFlow.test {
+            // When
+            assertNull(testStore.sideEffectFlow.value)
+            testStore.dispatchAction(TestAction.Increase)
+
+            // Then
+            assertEquals(0, (awaitItem() as TestState.Count).counter)
+            assertEquals(1, (awaitItem() as TestState.Count).counter)
+            assertNotNull(testStore.sideEffectFlow.value)
+        }
     }
 
 }
