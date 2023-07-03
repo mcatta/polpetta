@@ -1,12 +1,12 @@
 package dev.mcatta.polpetta
 
+import dev.mcatta.polpetta.core.Reducer
 import dev.mcatta.polpetta.core.ReducerFactoryBuilder
+import dev.mcatta.polpetta.core.reducer
 import dev.mcatta.polpetta.operators.Action
+import dev.mcatta.polpetta.operators.SideEffect
 import dev.mcatta.polpetta.operators.State
 import dev.mcatta.polpetta.operators.StateModifier
-import dev.mcatta.polpetta.core.Reducer
-import dev.mcatta.polpetta.core.reducer
-import dev.mcatta.polpetta.operators.SideEffect
 import kotlin.reflect.KClass
 
 /**
@@ -56,16 +56,4 @@ public abstract class ReducerFactory<A : Action, S : State, E : SideEffect>(
         )
     }
 
-}
-
-public fun test(block: String.(Int) -> Double) {
-    block.invoke("", 3)
-}
-
-public fun testUsing() {
-    test { value ->
-        toString()
-        value.plus(1)
-        0.2
-    }
 }
