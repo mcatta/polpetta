@@ -26,7 +26,7 @@ public abstract class StateStore<A : Action, S : State, E : SideEffect>(
     private val _reducerFactory: ReducerFactory<A, S, E> = object : ReducerFactory<A, S, E>(
         _sideEffectFactory
     ) {}.apply(reducerFactory)
-    private val _reducerQueue = Channel<Reducer<S>>()
+    private val _reducerQueue = Channel<A>()
     private val _stateFlow = MutableStateFlow(initialState)
 
     public val stateFlow: StateFlow<S> = _stateFlow.asStateFlow()
@@ -35,7 +35,15 @@ public abstract class StateStore<A : Action, S : State, E : SideEffect>(
     init {
         _reducerQueue
             .consumeAsFlow()
-            .map { reducer -> reducer.reduce(currentState = StateModifier.of(_stateFlow.value)) }
+            .map { action ->
+                val currentState = _stateFlow.value
+
+                _reducerFactory.getReducer(
+                    action = action,
+                    fromState = currentState
+                )?.reduce(currentState = StateModifier.of(currentState))
+            }
+            .filterNotNull()
             .onEach { newState -> _stateFlow.value = newState }
             .launchIn(coroutineScope)
     }
@@ -44,8 +52,6 @@ public abstract class StateStore<A : Action, S : State, E : SideEffect>(
      * Dispatch an action that trigger a Reducer
      * @return true if the Action si defined
      */
-    public suspend fun dispatchAction(action: A): Unit = _reducerFactory.getReducer(action).let { reducer ->
-        _reducerQueue.send(reducer)
-    }
+    public suspend fun dispatchAction(action: A): Unit = _reducerQueue.send(action)
 
 }

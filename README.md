@@ -43,20 +43,20 @@ class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterSta
     coroutineScope = scope,
     initialState = CounterState.Count(0),
     reducerFactory =  {
-        on<CounterAction.Decrease> { action, state ->
-            state.mutate<CounterState.Count> { copy(counter = counter - 1) }
+        on<CounterAction.Decrease, CounterState.Count> { action, state ->
+            state.mutate { copy(counter = counter - 1) }
         }
-        on<CounterAction.Increase> { action, state ->
-            state.mutate<CounterState.Count> { copy(counter = counter + 1) }
+        on<CounterAction.Increase, CounterState.Count> { action, state ->
+            state.mutate { copy(counter = counter + 1) }
         }
-        on<CounterAction.Set> { action, state ->
-            state.mutate<CounterState.Count> { copy(counter = action.n) }
+        on<CounterAction.Set, CounterState.Count> { action, state ->
+            state.mutate { copy(counter = action.n) }
         }
         on<CounterAction.DoNothing> { action, state ->
             state.nothing()
         }
-        on<CounterAction.ToString> { action, state ->
-            state.transform<CounterState.Count, CounterState.Result> { CounterState.Result(counter.toString()) }
+        on<CounterAction.ToString, CounterState.Count> { action, state ->
+            state.transform<CounterState.Result> { CounterState.Result(counter.toString()) }
         }
         // ...
     }
@@ -72,12 +72,12 @@ The reducer supports three types of operations:
 which basically doesn't change the state
 
 ```kotlin
-{ action, state -> state.mutate<CounterState.count> { copy(counter = counter + 1) } }
+{ action, state -> state.mutate { copy(counter = counter + 1) } }
 ```
 which mutate the properties of the current state (Note: your state must be `data class` in order to copy it)
 
 ```kotlin
-{ action, state -> state.transform<CounterState.count, CounterState.result> { CounterState.Result(counter.toString()) } }
+{ action, state -> state.transform { CounterState.Result(counter.toString()) } }
 ```
 which allows to change the current state into a new one of different type
 
@@ -94,7 +94,7 @@ class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterSta
 Then given a specific SideEffect event we can prompt it inside the Reducer's scope, like this:
 ```kotlin
 // Inside the StateStore
-on<TestAction.Increase> { _, stateModifier ->
+on<TestAction.Increase, TestState.Count> { _, stateModifier ->
     sideEffect(TestSideEffect.Toast("Show message"))
     
     stateModifier.mutate<TestState.Count> { copy(counter + 1) }
@@ -111,7 +111,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.  
 You may obtain a copy of the License at  
  
-     http://www.apache.org/licenses/LICENSE-2.0  
+     https://www.apache.org/licenses/LICENSE-2.0  
  
 Unless required by applicable law or agreed to in writing, software  
 distributed under the License is distributed on an "AS IS" BASIS,  

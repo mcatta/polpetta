@@ -3,8 +3,8 @@ package dev.mcatta.polpetta.operators
 /**
  * State Modifier used to manipulate the current state inside an Intent
  */
-public class StateModifier<S : State> private constructor(
-    private val state: S
+public class StateModifier<FromState : State> private constructor(
+    private val state: FromState
 ) {
 
     public companion object {
@@ -12,27 +12,29 @@ public class StateModifier<S : State> private constructor(
          * Smart constructor for the StateModifier creation
          * @param state
          */
-        public fun <S : State> of(state: S): StateModifier<S> = StateModifier(state)
+        public fun <FromState : State> of(
+            state: FromState
+        ): StateModifier<FromState> = StateModifier(state)
     }
 
     /**
      * Return the state without any changes
      */
-    public fun nothing(): S = state
+    public fun nothing(): FromState = state
 
     /**
      * Change the current state with new properties
      * @param mutator mutator callback
      */
-    public suspend fun <CurrentState : S> mutate(
-        mutator: suspend CurrentState.() -> CurrentState
-    ): CurrentState = mutator(getAndCheck())
+    public suspend fun mutate(
+        mutator: suspend FromState.() -> FromState
+    ): FromState = mutator(getAndCheck())
 
     /**
      * Change the current state into a new one
      * @param transformer transformer callback
      */
-    public suspend fun <FromState : S, ToState : S> transform(
+    public suspend fun <ToState : State> transform(
         transformer: suspend FromState.() -> ToState
     ): ToState = transformer(getAndCheck())
 
@@ -40,7 +42,7 @@ public class StateModifier<S : State> private constructor(
      * This function get the current state and validate is value
      */
     @Suppress("UNCHECKED_CAST")
-    private fun <CS : S> getAndCheck(): CS {
+    private fun <CS : FromState> getAndCheck(): CS {
         val currentState: CS? = state as? CS
         check(currentState != null) { "The current state is different by the specified" }
         return currentState

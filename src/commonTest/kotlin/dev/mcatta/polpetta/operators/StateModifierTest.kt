@@ -27,7 +27,7 @@ internal class StateModifierTest {
         val state = TestState.Count(42)
 
         // When
-        val newState = StateModifier.of(state).mutate<TestState.Count> { copy(counter = 24) }
+        val newState = StateModifier.of(state).mutate { copy(counter = 24) }
 
         // Then
         assertNotEquals(state, newState)
@@ -40,7 +40,7 @@ internal class StateModifierTest {
         val state = TestState.Count(42)
 
         // When
-        val newState = StateModifier.of<TestState>(state).transform<TestState.Count, TestState.Result> {
+        val newState = StateModifier.of(state).transform {
             TestState.Result(message = counter.toString())
         }
 

@@ -18,20 +18,25 @@ internal class StateStoreTest {
         coroutineScope = scope,
         initialState = TestState.Count(0),
         reducerFactory = {
-            on<TestAction.Decrease> { _, stateModifier ->
-                stateModifier.mutate<TestState.Count> { copy(counter = counter - 1) }
+            on<TestAction.Decrease, TestState.Count> { _, stateModifier ->
+                stateModifier.mutate { copy(counter = counter - 1) }
             }
-            on<TestAction.Increase> { _, stateModifier ->
-                stateModifier.mutate<TestState.Count> { copy(counter = counter.delayedIncrease()) }
+            on<TestAction.Increase, TestState.Count> { _, stateModifier ->
+                stateModifier.mutate { copy(counter = counter.delayedIncrease()) }
             }
-            on<TestAction.Set> { action, stateModifier ->
-                stateModifier.mutate<TestState.Count> { copy(counter = action.n) }
+            on<TestAction.Set, TestState.Count> { action, stateModifier ->
+                stateModifier.mutate { copy(counter = action.n) }
             }
-            on<TestAction.DoNothing> { _, stateModifier ->
+            on<TestAction.DoNothing, TestState.Count> { _, stateModifier ->
                 stateModifier.nothing()
             }
-            on<TestAction.ToString> { _, stateModifier ->
-                stateModifier.transform<TestState.Count, TestState.Result> { TestState.Result(counter.toString()) }
+            on<TestAction.ToString, TestState.Count> { _, stateModifier ->
+                stateModifier.transform { TestState.Result(counter.toString()) }
+            }
+            on<TestAction.Increase, TestState.Result> { _, stateModifier ->
+                stateModifier.transform {
+                    TestState.Count(message.toInt() + 1)
+                }
             }
         }
     )
@@ -59,6 +64,7 @@ internal class StateStoreTest {
             testStore.dispatchAction(TestAction.Decrease)
             testStore.dispatchAction(TestAction.Set(42))
             testStore.dispatchAction(TestAction.ToString)
+            testStore.dispatchAction(TestAction.Increase)
 
             // Then
             assertEquals(0, (awaitItem() as TestState.Count).counter)
@@ -67,6 +73,7 @@ internal class StateStoreTest {
             assertEquals(1, (awaitItem() as TestState.Count).counter)
             assertEquals(42, (awaitItem() as TestState.Count).counter)
             assertEquals("42", (awaitItem() as TestState.Result).message)
+            assertEquals(43, (awaitItem() as TestState.Count).counter)
         }
     }
 
@@ -77,14 +84,19 @@ internal class StateStoreTest {
             coroutineScope = testScope,
             initialState = TestState.Count(0),
             reducerFactory = {
-                on<TestAction.DoNothing> { _, stateModifier ->
+                on<TestAction.DoNothing, TestState.Count> { _, stateModifier ->
                     stateModifier.nothing()
                 }
             }
         ) {}
 
-        // When / Then
-        assertFailsWith<IllegalStateException> { testStore.dispatchAction(TestAction.Increase) }
+        testStore.stateFlow.test {
+            // When
+            testStore.dispatchAction(TestAction.Increase)
+
+            // Then
+            assertEquals(0, (awaitItem() as TestState.Count).counter)
+        }
     }
 
     @Test
@@ -94,9 +106,9 @@ internal class StateStoreTest {
             coroutineScope = testScope,
             initialState = TestState.Count(0),
             reducerFactory = {
-                on<TestAction.Increase> { _, stateModifier ->
+                on<TestAction.Increase, TestState.Count> { _, stateModifier ->
                     sideEffect(TestSideEffect.Toast)
-                    stateModifier.mutate<TestState.Count> { copy(counter + 1) }
+                    stateModifier.mutate { copy(counter = counter + 1) }
                 }
             }
         ) {}
