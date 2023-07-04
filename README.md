@@ -12,7 +12,7 @@ repositories {
   mavenCentral()
 }
 dependencies {
-  implementation 'dev.mcatta:polpetta:0.0.3'
+  implementation 'dev.mcatta:polpetta:0.0.4'
 }
 ```
 
