@@ -1,6 +1,5 @@
 package dev.mcatta.polpetta
 
-import dev.mcatta.polpetta.core.Reducer
 import dev.mcatta.polpetta.operators.Action
 import dev.mcatta.polpetta.operators.SideEffect
 import dev.mcatta.polpetta.operators.State
@@ -38,10 +37,7 @@ public abstract class StateStore<A : Action, S : State, E : SideEffect>(
             .map { action ->
                 val currentState = _stateFlow.value
 
-                _reducerFactory.getReducer(
-                    action = action,
-                    fromState = currentState
-                )?.reduce(currentState = StateModifier.of(currentState))
+                reduceState(action, currentState)
             }
             .filterNotNull()
             .onEach { newState -> _stateFlow.value = newState }
@@ -49,7 +45,24 @@ public abstract class StateStore<A : Action, S : State, E : SideEffect>(
     }
 
     /**
+     * Reduce the [currentState] into a new one based on the [action] and the [currentState] itself.
+     * In case this pair is not defined into the [ReducerFactory] class this will return null
+     *
+     * @param action
+     * @param currentState
+     * @return new state or null
+     */
+    private suspend fun reduceState(
+        action: A,
+        currentState: S
+    ): S? = _reducerFactory.getReducer(
+        action = action,
+        fromState = currentState
+    )?.reduce(currentState = StateModifier.of(currentState))
+
+    /**
      * Dispatch an action that trigger a Reducer
+     *
      * @return true if the Action si defined
      */
     public suspend fun dispatchAction(action: A): Unit = _reducerQueue.send(action)

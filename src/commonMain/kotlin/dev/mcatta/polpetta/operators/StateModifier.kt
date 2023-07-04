@@ -10,6 +10,7 @@ public class StateModifier<FromState : State> private constructor(
     public companion object {
         /**
          * Smart constructor for the StateModifier creation
+         *
          * @param state
          */
         public fun <FromState : State> of(
@@ -24,7 +25,9 @@ public class StateModifier<FromState : State> private constructor(
 
     /**
      * Change the current state with new properties
+     *
      * @param mutator mutator callback
+     * @return the mutated [FromState]
      */
     public suspend fun mutate(
         mutator: suspend FromState.() -> FromState
@@ -32,7 +35,9 @@ public class StateModifier<FromState : State> private constructor(
 
     /**
      * Change the current state into a new one
+     *
      * @param transformer transformer callback
+     * @return a new state that inherited from [State]
      */
     public suspend fun <ToState : State> transform(
         transformer: suspend FromState.() -> ToState
@@ -40,6 +45,8 @@ public class StateModifier<FromState : State> private constructor(
 
     /**
      * This function get the current state and validate is value
+     *
+     * @return the current state or throws an exception
      */
     @Suppress("UNCHECKED_CAST")
     private fun <CS : FromState> getAndCheck(): CS {

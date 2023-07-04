@@ -6,6 +6,7 @@ import kotlin.reflect.KClass
 
 /**
  * Reducer Factory Builder used to wrap the Reduce function based on an action
+ *
  * @param kClassAction action type
  * @param handler reducer
  */

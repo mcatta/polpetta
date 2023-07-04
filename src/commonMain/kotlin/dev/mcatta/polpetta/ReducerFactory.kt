@@ -21,9 +21,11 @@ public abstract class ReducerFactory<A : Action, S : State, E : SideEffect>(
     private val _sideEffectFactory = sideEffectFactory
 
     /**
-     * Return the [Reducer] bond to the action [action]
+     * Return the [Reducer] bond to the action [action] and [FromState]
+     *
      * @param action
-     * @throws IllegalStateException in case that action doesn't have any Reducers
+     * @param fromState
+     * @return Reducer if matches the pair
      */
     internal fun <FromState : S> getReducer(
         action: A,
@@ -35,6 +37,7 @@ public abstract class ReducerFactory<A : Action, S : State, E : SideEffect>(
 
     /**
      * Define a [Reducer]'s body for the defined action [A]
+     *
      * @param block
      */
     public inline fun <reified RA : A, reified FromState : S> on(
@@ -45,6 +48,7 @@ public abstract class ReducerFactory<A : Action, S : State, E : SideEffect>(
 
     /**
      * Define a [Reducer]'s body for the defined action with class [KClass]
+     *
      * @param kClassAction
      * @param kClassFromState
      * @param block

@@ -12,5 +12,10 @@ internal fun interface Reducer<S : State> {
 
 /**
  * This method allows to create an [Reducer]
+ *
+ * @param block function's body
+ * @return Reducer function
  */
-internal fun <S : State> reducer(block: suspend (StateModifier<S>) -> S) = Reducer(block)
+internal fun <S : State> reducer(
+    block: suspend (StateModifier<S>) -> S
+) = Reducer(block)
