@@ -12,9 +12,10 @@ repositories {
   mavenCentral()
 }
 dependencies {
-  implementation 'dev.mcatta:polpetta:0.0.4'
+  implementation 'dev.mcatta:polpetta:0.0.5'
 }
 ```
+The full reference documentation [is available here](https://mcatta.github.io/polpetta/docs).
 
 ## How it works
 You application's State must extend `State` and your action the `Action` class. Every `Action` can prompt a `Reducer` which basically manipulate your State.
@@ -60,6 +61,15 @@ class CounterStore(scope: CoroutineScope) : StateStore<CounterAction, CounterSta
         }
         // ...
     }
+)
+```
+You can add the `debugMode = true` to enable the logging.
+```kotlin
+StateStore<CounterAction, CounterState, MySideEffect>(
+    coroutineScope = scope,
+    debugMode = true,
+    initialState = CounterState.Count(0),
+    reducerFactory =  {}
 )
 ```
 
