@@ -1,0 +1,29 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.mcatta.polpetta.operators////PointingToDeclaration/-polpetta/dev.mcatta.polpetta.operators/index.html
+$dokka.location:dev.mcatta.polpetta.operators/Action///PointingToDeclaration/-polpetta/dev.mcatta.polpetta.operators/-action/index.html
+$dokka.location:dev.mcatta.polpetta.operators/SideEffect///PointingToDeclaration/-polpetta/dev.mcatta.polpetta.operators/-side-effect/index.html
+$dokka.location:dev.mcatta.polpetta.operators/State///PointingToDeclaration/-polpetta/dev.mcatta.polpetta.operators/-state/index.html
+$dokka.location:dev.mcatta.polpetta.operators/StateModifier.Companion///PointingToDeclaration/-polpetta/dev.mcatta.polpetta.operators/-state-modifier/-companion/index.html
+$dokka.location:dev.mcatta.polpetta.operators/StateModifier.Companion/of/#TypeParam(bounds=[dev.mcatta.polpetta.operators.State])/PointingToDeclaration/-polpetta/dev.mcatta.polpetta.operators/-state-modifier/-companion/of.html
+$dokka.location:dev.mcatta.polpetta.operators/StateModifier///PointingToDeclaration/-polpetta/dev.mcatta.polpetta.operators/-state-modifier/index.html
+$dokka.location:dev.mcatta.polpetta.operators/StateModifier/mutate/#kotlin.coroutines.SuspendFunction1[TypeParam(bounds=[dev.mcatta.polpetta.operators.State]),TypeParam(bounds=[dev.mcatta.polpetta.operators.State])]/PointingToDeclaration/-polpetta/dev.mcatta.polpetta.operators/-state-modifier/mutate.html
+$dokka.location:dev.mcatta.polpetta.operators/StateModifier/nothing/#/PointingToDeclaration/-polpetta/dev.mcatta.polpetta.operators/-state-modifier/nothing.html
+$dokka.location:dev.mcatta.polpetta.operators/StateModifier/transform/#kotlin.coroutines.SuspendFunction1[TypeParam(bounds=[dev.mcatta.polpetta.operators.State]),TypeParam(bounds=[dev.mcatta.polpetta.operators.State])]/PointingToDeclaration/-polpetta/dev.mcatta.polpetta.operators/-state-modifier/transform.html
+$dokka.location:dev.mcatta.polpetta////PointingToDeclaration/-polpetta/dev.mcatta.polpetta/index.html
+$dokka.location:dev.mcatta.polpetta/ReducerFactory///PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-reducer-factory/index.html
+$dokka.location:dev.mcatta.polpetta/ReducerFactory/ReducerFactory/#dev.mcatta.polpetta.SideEffectFactory[TypeParam(bounds=[dev.mcatta.polpetta.operators.SideEffect])]/PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-reducer-factory/-reducer-factory.html
+$dokka.location:dev.mcatta.polpetta/ReducerFactory/on/#kotlin.coroutines.SuspendFunction3[dev.mcatta.polpetta.SideEffectFactory[TypeParam(bounds=[dev.mcatta.polpetta.operators.SideEffect])],TypeParam(bounds=[TypeParam(bounds=[dev.mcatta.polpetta.operators.Action])]),dev.mcatta.polpetta.operators.StateModifier[TypeParam(bounds=[TypeParam(bounds=[dev.mcatta.polpetta.operators.State])])],TypeParam(bounds=[dev.mcatta.polpetta.operators.State])]/PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-reducer-factory/on.html
+$dokka.location:dev.mcatta.polpetta/ReducerFactory/on/#kotlin.reflect.KClass[TypeParam(bounds=[TypeParam(bounds=[dev.mcatta.polpetta.operators.Action])])]#kotlin.reflect.KClass[TypeParam(bounds=[TypeParam(bounds=[dev.mcatta.polpetta.operators.State])])]#kotlin.coroutines.SuspendFunction3[dev.mcatta.polpetta.SideEffectFactory[TypeParam(bounds=[dev.mcatta.polpetta.operators.SideEffect])],TypeParam(bounds=[TypeParam(bounds=[dev.mcatta.polpetta.operators.Action])]),dev.mcatta.polpetta.operators.StateModifier[TypeParam(bounds=[TypeParam(bounds=[dev.mcatta.polpetta.operators.State])])],TypeParam(bounds=[dev.mcatta.polpetta.operators.State])]/PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-reducer-factory/on.html
+$dokka.location:dev.mcatta.polpetta/SideEffectFactory///PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-side-effect-factory/index.html
+$dokka.location:dev.mcatta.polpetta/SideEffectFactory/SideEffectFactory/#/PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-side-effect-factory/-side-effect-factory.html
+$dokka.location:dev.mcatta.polpetta/SideEffectFactory/sideEffect/#TypeParam(bounds=[dev.mcatta.polpetta.operators.SideEffect])/PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-side-effect-factory/side-effect.html
+$dokka.location:dev.mcatta.polpetta/SideEffectFactory/sideEffectFlow/#/PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-side-effect-factory/side-effect-flow.html
+$dokka.location:dev.mcatta.polpetta/StateStore///PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-state-store/index.html
+$dokka.location:dev.mcatta.polpetta/StateStore/StateStore/#kotlinx.coroutines.CoroutineScope#TypeParam(bounds=[dev.mcatta.polpetta.operators.State])#kotlin.Boolean#kotlin.Function1[dev.mcatta.polpetta.ReducerFactory[TypeParam(bounds=[dev.mcatta.polpetta.operators.Action]),TypeParam(bounds=[dev.mcatta.polpetta.operators.State]),TypeParam(bounds=[dev.mcatta.polpetta.operators.SideEffect])],kotlin.Unit]/PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-state-store/-state-store.html
+$dokka.location:dev.mcatta.polpetta/StateStore/dispatchAction/#TypeParam(bounds=[dev.mcatta.polpetta.operators.Action])/PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-state-store/dispatch-action.html
+$dokka.location:dev.mcatta.polpetta/StateStore/sideEffectFlow/#/PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-state-store/side-effect-flow.html
+$dokka.location:dev.mcatta.polpetta/StateStore/stateFlow/#/PointingToDeclaration/-polpetta/dev.mcatta.polpetta/-state-store/state-flow.html
+dev.mcatta.polpetta
+dev.mcatta.polpetta.operators
+
