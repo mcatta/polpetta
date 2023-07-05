@@ -1,5 +1,7 @@
 package dev.mcatta.polpetta
 
+import dev.mcatta.polpetta.core.logger.LogEvent
+import dev.mcatta.polpetta.core.logger.StoreLogger
 import dev.mcatta.polpetta.operators.Action
 import dev.mcatta.polpetta.operators.SideEffect
 import dev.mcatta.polpetta.operators.State
@@ -18,8 +20,11 @@ import kotlinx.coroutines.flow.*
 public abstract class StateStore<A : Action, S : State, E : SideEffect>(
     coroutineScope: CoroutineScope,
     initialState: S,
+    debugMode: Boolean = false,
     reducerFactory: ReducerFactory<A, S, E>.() -> Unit
 ) {
+
+    private val _logger: StoreLogger<A, S>? = if (debugMode) StoreLogger(this::class.simpleName) else null
 
     private val _sideEffectFactory = SideEffectFactory<E>()
     private val _reducerFactory: ReducerFactory<A, S, E> = object : ReducerFactory<A, S, E>(
@@ -37,12 +42,27 @@ public abstract class StateStore<A : Action, S : State, E : SideEffect>(
             .map { action ->
                 val currentState = _stateFlow.value
 
-                reduceState(action, currentState)
+                reduceState(action, currentState).also { newState ->
+                    if (newState != null) {
+                        _logger?.log(LogEvent.DEBUG_EV_PROCESSED, action, currentState::class, newState::class)
+                    } else {
+                        _logger?.log(LogEvent.DEBUG_EV_IGNORED, action, currentState::class)
+                    }
+                }
             }
             .filterNotNull()
             .onEach { newState -> _stateFlow.value = newState }
             .launchIn(coroutineScope)
     }
+
+    /**
+     * Dispatch an action that trigger a Reducer
+     *
+     * @param action
+     */
+    public suspend fun dispatchAction(action: A): Unit = action
+        .also { _logger?.log(LogEvent.DEBUG_EV_DISPATCH, action) }
+        .let { _reducerQueue.send(it) }
 
     /**
      * Reduce the [currentState] into a new one based on the [action] and the [currentState] itself.
@@ -59,12 +79,5 @@ public abstract class StateStore<A : Action, S : State, E : SideEffect>(
         action = action,
         fromState = currentState
     )?.reduce(currentState = StateModifier.of(currentState))
-
-    /**
-     * Dispatch an action that trigger a Reducer
-     *
-     * @return true if the Action si defined
-     */
-    public suspend fun dispatchAction(action: A): Unit = _reducerQueue.send(action)
 
 }
