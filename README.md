@@ -12,7 +12,7 @@ repositories {
   mavenCentral()
 }
 dependencies {
-  implementation 'dev.mcatta:polpetta:0.0.5'
+  implementation 'dev.mcatta:polpetta:0.0.6'
 }
 ```
 The full reference documentation [is available here](https://mcatta.github.io/polpetta/docs).
