@@ -16,8 +16,7 @@ public abstract class ReducerFactory<A : Action, S : State, E : SideEffect>(
     sideEffectFactory: SideEffectFactory<E>
 ) {
 
-    private val _reducerDefinition: MutableMap<KClass<out State>, MutableList<ReducerFactoryBuilder<A, S>>> =
-        mutableMapOf()
+    private val _reducerDefinition: MutableList<ReducerFactoryBuilder<A, S>> = mutableListOf()
     private val _sideEffectFactory = sideEffectFactory
 
     /**
@@ -30,10 +29,9 @@ public abstract class ReducerFactory<A : Action, S : State, E : SideEffect>(
     internal fun <FromState : S> getReducer(
         action: A,
         fromState: FromState
-    ): Reducer<S>? =
-        _reducerDefinition[fromState::class]
-            ?.firstOrNull { item -> item.kClassAction == action::class }
-            ?.build(action)
+    ): Reducer<S>? = _reducerDefinition
+        .firstOrNull { item -> item.kClassAction == action::class && item.kClassFromState.isInstance(fromState) }
+        ?.build(action)
 
     /**
      * Define a [Reducer]'s body for the defined action [A]
@@ -58,9 +56,10 @@ public abstract class ReducerFactory<A : Action, S : State, E : SideEffect>(
         kClassFromState: KClass<FromState>,
         block: suspend SideEffectFactory<E>.(RA, StateModifier<FromState>) -> S
     ) {
-        _reducerDefinition.getOrPut(kClassFromState) { mutableListOf() }.add(
+        _reducerDefinition.add(
             ReducerFactoryBuilder(
                 kClassAction = kClassAction,
+                kClassFromState = kClassFromState,
                 handler = { action ->
                     @Suppress("UNCHECKED_CAST")
                     (reducer { state -> block(_sideEffectFactory, action as RA, state as StateModifier<FromState>) })

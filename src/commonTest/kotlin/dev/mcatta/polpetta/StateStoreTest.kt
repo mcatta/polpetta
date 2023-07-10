@@ -100,6 +100,35 @@ internal class StateStoreTest {
     }
 
     @Test
+    fun `Test action based on a Generic State`() = runTest(context = testScope.coroutineContext) {
+        // Given
+        val testStore = object : StateStore<TestAction, TestState, Nothing>(
+            coroutineScope = testScope,
+            initialState = TestState.Count(0),
+            reducerFactory = {
+                on<TestAction.Increase, TestState.Count> { _, stateModifier ->
+                    stateModifier.transform { copy(counter = counter + 1) }
+                }
+
+                on<TestAction.ToString, TestState> { _, stateModifier ->
+                    stateModifier.transform { TestState.Result(this.toString()) }
+                }
+            }
+        ) {}
+
+        testStore.stateFlow.test {
+            // When
+            testStore.dispatchAction(TestAction.Increase)
+            testStore.dispatchAction(TestAction.ToString)
+
+            // Then
+            assertIs<TestState.Count>(awaitItem())
+            assertIs<TestState.Count>(awaitItem())
+            assertIs<TestState.Result>(awaitItem())
+        }
+    }
+
+    @Test
     fun `Test Intents execution and side effect`() = runTest(context = testScope.coroutineContext) {
         // Given
         val testStore = object : StateStore<TestAction, TestState, TestSideEffect>(
