@@ -30,7 +30,7 @@ public abstract class StateStore<A : Action, S : State, E : SideEffect>(
     private val _reducerFactory: ReducerFactory<A, S, E> = object : ReducerFactory<A, S, E>(
         _sideEffectFactory
     ) {}.apply(reducerFactory)
-    private val _reducerQueue = Channel<A>()
+    private val _reducerQueue = Channel<A>(capacity = Channel.BUFFERED)
     private val _stateFlow = MutableStateFlow(initialState)
 
     public val stateFlow: StateFlow<S> = _stateFlow.asStateFlow()
