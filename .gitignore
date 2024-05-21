@@ -11,6 +11,7 @@
 /.idea/navEditor.xml
 /.idea/deploymentTargetDropDown.xml
 /.idea/assetWizardSettings.xml
+/.kotlin
 
 # Other
 .DS_Store

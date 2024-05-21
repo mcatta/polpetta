@@ -51,7 +51,7 @@ public class StateModifier<FromState : State> private constructor(
     @Suppress("UNCHECKED_CAST")
     private fun <CS : FromState> getAndCheck(): CS {
         val currentState: CS? = state as? CS
-        check(currentState != null) { "The current state is different by the specified" }
+        checkNotNull(currentState) { "The current state is different by the specified" }
         return currentState
     }
 
