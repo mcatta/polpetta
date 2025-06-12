@@ -6,7 +6,7 @@ kotlin = "2.1.21"
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-turbine = { module = "app.cash.turbine:turbine", version = "1.2.0" }
+turbine = { module = "app.cash.turbine:turbine", version = "1.2.1" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
